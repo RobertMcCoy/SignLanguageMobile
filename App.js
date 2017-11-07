@@ -28,36 +28,8 @@ export default class App extends Component {
         orientation: Camera.constants.Orientation.auto,
         flashMode: Camera.constants.FlashMode.auto,
       },
-      isRecording: false
+      currentTranslation: ''
     };
-  }
-
-  takePicture = () => {
-    if (this.camera) {
-      this.camera.capture()
-        .then((data) => console.log(data))
-        .catch(err => console.error(err));
-    }
-  }
-
-  startRecording = () => {
-    if (this.camera) {
-      this.camera.capture({ mode: Camera.constants.CaptureMode.video })
-        .then((data) => console.log(data))
-        .catch(err => console.error(err));
-      this.setState({
-        isRecording: true
-      });
-    }
-  }
-
-  stopRecording = () => {
-    if (this.camera) {
-      this.camera.stopCapture();
-      this.setState({
-        isRecording: false
-      });
-    }
   }
 
   switchType = () => {
@@ -86,41 +58,6 @@ export default class App extends Component {
       icon = require('./assets/ic_camera_rear_white.png');
     } else if (this.state.camera.type === front) {
       icon = require('./assets/ic_camera_front_white.png');
-    }
-
-    return icon;
-  }
-
-  switchFlash = () => {
-    let newFlashMode;
-    const { auto, on, off } = Camera.constants.FlashMode;
-
-    if (this.state.camera.flashMode === auto) {
-      newFlashMode = on;
-    } else if (this.state.camera.flashMode === on) {
-      newFlashMode = off;
-    } else if (this.state.camera.flashMode === off) {
-      newFlashMode = auto;
-    }
-
-    this.setState({
-      camera: {
-        ...this.state.camera,
-        flashMode: newFlashMode,
-      },
-    });
-  }
-
-  get flashIcon() {
-    let icon;
-    const { auto, on, off } = Camera.constants.FlashMode;
-
-    if (this.state.camera.flashMode === auto) {
-      icon = require('./assets/ic_flash_auto_white.png');
-    } else if (this.state.camera.flashMode === on) {
-      icon = require('./assets/ic_flash_on_white.png');
-    } else if (this.state.camera.flashMode === off) {
-      icon = require('./assets/ic_flash_off_white.png');
     }
 
     return icon;
@@ -166,42 +103,7 @@ export default class App extends Component {
           </TouchableOpacity>
         </View>
         <View style={[styles.overlay, styles.bottomOverlay]}>
-          {
-            !this.state.isRecording
-            &&
-            <TouchableOpacity
-              style={styles.captureButton}
-              onPress={this.takePicture}
-            >
-              <Image
-                source={require('./assets/ic_photo_camera_36pt.png')}
-              />
-            </TouchableOpacity>
-            ||
-            null
-          }
-          <View style={styles.buttonsSpace} />
-          {
-            !this.state.isRecording
-            &&
-            <TouchableOpacity
-              style={styles.captureButton}
-              onPress={this.startRecording}
-            >
-              <Image
-                source={require('./assets/ic_videocam_36pt.png')}
-              />
-            </TouchableOpacity>
-            ||
-            <TouchableOpacity
-              style={styles.captureButton}
-              onPress={this.stopRecording}
-            >
-              <Image
-                source={require('./assets/ic_stop_36pt.png')}
-              />
-            </TouchableOpacity>
-          }
+          
         </View>
       </View>
     );
