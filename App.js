@@ -12,6 +12,8 @@ import {
   StyleSheet,
   TouchableOpacity,
   View,
+  Text,
+  Button
 } from 'react-native';
 
 export default class App extends Component {
@@ -28,7 +30,7 @@ export default class App extends Component {
         orientation: Camera.constants.Orientation.auto,
         flashMode: Camera.constants.FlashMode.auto,
       },
-      currentTranslation: ''
+      currentTranslation: 'A B C'
     };
   }
 
@@ -63,6 +65,14 @@ export default class App extends Component {
     return icon;
   }
 
+  clearTranslationText = () => {
+    this.setState(
+      {
+        currentTranslation: ''
+      }
+    );
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -93,6 +103,7 @@ export default class App extends Component {
               source={this.typeIcon}
             />
           </TouchableOpacity>
+          <Text ref={'translationTextRef'}>{this.state.currentTranslation}</Text>
           <TouchableOpacity
             style={styles.flashButton}
             onPress={this.switchFlash}
@@ -103,7 +114,12 @@ export default class App extends Component {
           </TouchableOpacity>
         </View>
         <View style={[styles.overlay, styles.bottomOverlay]}>
-          
+          <Button
+            onPress={this.clearTranslationText}
+            title="Clear"
+            color="#841584"
+            accessibilityLabel="Clear Translations"
+          />
         </View>
       </View>
     );
