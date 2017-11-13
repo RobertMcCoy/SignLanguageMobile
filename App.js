@@ -103,7 +103,7 @@ export default class App extends Component {
               source={this.typeIcon}
             />
           </TouchableOpacity>
-          <Text ref={'translationTextRef'}>{this.state.currentTranslation}</Text>
+          <Text ref={'translationTextRef'} style={styles.translationText}>{this.state.currentTranslation}</Text>
           <TouchableOpacity
             style={styles.flashButton}
             onPress={this.switchFlash}
@@ -148,6 +148,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+  },
+  translationText: {
+    color: 'white',
+    fontSize: 48,
+    borderColor: 'black',
+    borderWidth: 5,
+    textAlign: 'center'
   },
   bottomOverlay: {
     bottom: 0,
