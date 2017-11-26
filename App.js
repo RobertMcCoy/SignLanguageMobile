@@ -65,6 +65,11 @@ export default class App extends Component {
     return icon;
   }
 
+  get helpIcon() {
+    let icon = require('./assets/info.png');
+    return icon;
+  }
+
   clearTranslationText = () => {
     this.setState(
       {
@@ -102,22 +107,30 @@ export default class App extends Component {
             <Image
               source={this.typeIcon}
             />
+            {(() => {
+              const { back, front } = Camera.constants.Type;
+              if (this.state.camera.type === front) {
+                return <Text ref={'backCameraBtnText'} style={styles.frontBtnTxt}>Back</Text>
+              } else {
+                return <Text ref={'frontCameraBtnText'} style={styles.frontBtnTxt}>Front</Text>
+              }
+            })()}
           </TouchableOpacity>
-          <Text ref={'translationTextRef'} style={styles.translationText}>{this.state.currentTranslation}</Text>
+          <Text ref={'translationTextRef'} style={styles.translationText}>Translation:{"\n"}{this.state.currentTranslation}</Text>
           <TouchableOpacity
             style={styles.flashButton}
-            onPress={this.switchFlash}
+            onPress={this.showHelp}
           >
             <Image
-              source={this.flashIcon}
+              source={this.helpIcon}
             />
           </TouchableOpacity>
         </View>
         <View style={[styles.overlay, styles.bottomOverlay]}>
           <Button
             onPress={this.clearTranslationText}
-            title="Clear"
-            color="#841584"
+            title="Clear Translation"
+            color="red"
             accessibilityLabel="Clear Translations"
           />
         </View>
@@ -148,10 +161,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,.5)'
   },
   translationText: {
     color: 'white',
-    fontSize: 48,
+    fontSize: 28,
     borderColor: 'black',
     borderWidth: 5,
     textAlign: 'center'
@@ -176,5 +190,15 @@ const styles = StyleSheet.create({
   },
   buttonsSpace: {
     width: 10,
+  },
+  frontBtnTxt: {
+    color: 'white',
+    textShadowColor: 'black',
+    textShadowRadius: 50  
+  },
+  backBtnTxt: {
+    color: 'white',
+    textShadowColor: 'black',
+    textShadowRadius: 50
   },
 });
