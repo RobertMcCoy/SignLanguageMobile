@@ -116,7 +116,7 @@ export default class App extends Component {
               }
             })()}
           </TouchableOpacity>
-          <Text ref={'translationTextRef'} style={styles.translationText}>Translation:{"\n"}{this.state.currentTranslation}</Text>
+          <Text ref={'translationTextRef'} style={styles.translationText}>Translation{"\n"}{this.state.currentTranslation}</Text>
           <TouchableOpacity
             style={styles.flashButton}
             onPress={this.showHelp}
