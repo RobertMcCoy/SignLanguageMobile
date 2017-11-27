@@ -13,7 +13,8 @@ import {
   TouchableOpacity,
   View,
   Text,
-  Button
+  Button,
+  Modal
 } from 'react-native';
 
 export default class App extends Component {
@@ -29,6 +30,7 @@ export default class App extends Component {
         type: Camera.constants.Type.back,
         orientation: Camera.constants.Orientation.auto,
         flashMode: Camera.constants.FlashMode.auto,
+        modalVisible: false
       },
       currentTranslation: 'A B C'
     };
@@ -70,6 +72,10 @@ export default class App extends Component {
     return icon;
   }
 
+  showHelp = () => {
+    this.setState({camera: {modalVisible: true}});
+  }
+
   clearTranslationText = () => {
     this.setState(
       {
@@ -85,6 +91,35 @@ export default class App extends Component {
           animated
           hidden
         />
+
+        <Modal
+          animationType="slide"
+          transparent={false}
+          visible={this.state.camera.modalVisible}
+          onRequestClose={() => {alert("Modal has been closed.")}}
+          >
+         <View style={{marginTop: 50}}>
+          <View style={{justifyContent: 'center', alignItems: 'center',}}>
+            
+            <Text style={styles.helpText}>GESTR</Text>
+            <Text style={styles.helpBody}>
+              Welcome to Gestr! You can simply point your phone camera at someone signing the 24 static letters of the alphabet and have an automatic translation happen! You can use the front or back camera; change it by tapping the icon in the upper left corner on the main screen.
+            </Text>
+            <Image source={require('./assets/signlanguageexample.png')}/>
+
+            <Button 
+              onPress={() => {
+                this.setState({camera: {modalVisible: false}});
+              }}
+              title= "Close"
+              color="red"
+              accessibilityLabel="Close"
+            />
+
+          </View>
+         </View>
+        </Modal>
+
         <Camera
           ref={(cam) => {
             this.camera = cam;
@@ -117,6 +152,7 @@ export default class App extends Component {
             })()}
           </TouchableOpacity>
           <Text ref={'translationTextRef'} style={styles.translationText}>Translation{"\n"}{this.state.currentTranslation}</Text>
+
           <TouchableOpacity
             style={styles.flashButton}
             onPress={this.showHelp}
@@ -126,6 +162,7 @@ export default class App extends Component {
             />
           </TouchableOpacity>
         </View>
+        
         <View style={[styles.overlay, styles.bottomOverlay]}>
           <Button
             onPress={this.clearTranslationText}
@@ -134,6 +171,7 @@ export default class App extends Component {
             accessibilityLabel="Clear Translations"
           />
         </View>
+        
       </View>
     );
   }
@@ -200,5 +238,17 @@ const styles = StyleSheet.create({
     color: 'white',
     textShadowColor: 'black',
     textShadowRadius: 50
+  },
+  helpText: {
+    color: 'black',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    fontSize: 48,
+    marginBottom: 24
+  },
+  helpBody: {
+    fontSize: 24,
+    padding: 10,
+    textAlign: 'center'
   },
 });
