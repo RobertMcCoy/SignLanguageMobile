@@ -168,6 +168,7 @@ export default class App extends Component {
             <Image
               source={this.helpIcon}
             />
+            <Text ref={'helpBtnText'} style={styles.frontBtnTxt}>Help</Text>
           </TouchableOpacity>
         </View>
 
