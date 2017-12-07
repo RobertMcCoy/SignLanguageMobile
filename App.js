@@ -5,6 +5,7 @@
  */
 
 import React, { Component } from 'react';
+import { Model } from 'keras-js';
 import Camera from 'react-native-camera';
 import {
   Image,
