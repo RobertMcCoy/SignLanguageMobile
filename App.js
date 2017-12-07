@@ -5,7 +5,7 @@
  */
 
 import React, { Component } from 'react';
-import { Model } from 'keras-js';
+import kerasJs, { Model } from 'keras-js';
 import Camera from 'react-native-camera';
 import {
   Image,
@@ -17,12 +17,16 @@ import {
   Button,
   Modal
 } from 'react-native';
+import TensorFlow from 'react-native-tensorflow';
+const graph = require('assets/graph.pb');
 
 export default class App extends Component {
   constructor(props) {
     super(props);
 
     this.camera = null;
+
+    const tf = new TensorFlow('graph.pb')
 
     this.state = {
       camera: {
@@ -33,8 +37,25 @@ export default class App extends Component {
         flashMode: Camera.constants.FlashMode.auto
       },
       modalVisible: false,
-      currentTranslation: 'A B C'
+      currentTranslation: '',
+      tensorflow: tf
     };
+  }
+
+  dataPrep = () => {
+    this.camera.capture({metadata: options})
+      .then((data) => {
+        await tf.feed({name: 'input', data: data, shape: [1,2,4], dtype: "int64"});
+        await tf.run(['output']);
+        var prediction = await tf.fetch('output');
+        console.log("New prediction: " + prediction);
+        var currentTranslation = this.state.currentTranslation;
+        currentTranslation += prediction;
+        this.setState({
+          currentTranslation: currentTranslation
+        })
+      })
+    }
   }
 
   switchType = () => {
